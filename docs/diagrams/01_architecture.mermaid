@@ -1,0 +1,60 @@
+---
+title: "会議レイヤーの統合設計 — .company/ 全体フロー"
+---
+flowchart TD
+    subgraph legend["凡例"]
+        direction LR
+        L1["🟥 Ken起動"]
+        L2["🟨 自動起動"]
+        L3["🟩 既存構造"]
+        L4["⬜ 新規追加"]
+    end
+
+    Ken["👤 Ken (CEO)<br/>発言でフェーズ決定"]
+    Secretary["📋 秘書<br/>トリガーワード検知 → 会議召喚 or CEO転送"]
+    CEO_Agent["🏛 CEO Agent (振り分け)<br/>Vision整合 → 担当ルーティング"]
+
+    Ken --> Secretary
+    Secretary --> CEO_Agent
+
+    subgraph meetings[".company/meetings/ [新規追加]"]
+        direction TB
+        M1["🟥 発散会議<br/>「発散会議を開いて」→ Ken起動<br/>ビジョン番人・アナロジー職人・ユーザー代弁者<br/>→ secretary/notes/ に保存"]
+        M2["🟥 選択会議<br/>「選択会議を開いて」→ Ken起動<br/>破壊チーム・5-Whys・数字ハンター・シンセサイザー<br/>→ ceo/pending_decisions.md に保存"]
+        M3["⚡ 要件定義会議（ブリッジ）<br/>「要件定義会議を開いて」or 選択確定後 自動<br/>破壊チーム・PM Agent・技術Agent・シンセサイザー<br/>→ projects/PRJ-xxx/01_requirements/ に直接出力"]
+        M1 --> M2 --> M3
+    end
+
+    subgraph vision_meeting["Vision整合会議（自動）"]
+        VM["CEO が Vision抵触を検知した時点で自動召喚<br/>参加: CEO + 秘書 + 発案者ロール<br/>→ ceo/pending_decisions.md に記録"]
+    end
+
+    Secretary --> meetings
+    CEO_Agent -.-> vision_meeting
+
+    subgraph dev[".company/dev/projects/PRJ-xxx/"]
+        direction TB
+        D1["01 要件定義 (PM)<br/>requirements.md"]
+        D2["02 基本設計 (Architect)<br/>basic_design.md"]
+        D3["03 詳細設計 (Sr.Eng)<br/>detailed_design.md"]
+        D4["04 実装 (Engineer)<br/>src/ + self_review.md"]
+        D5["05 受入テスト (QA)<br/>test_result.md"]
+        D6["06 リリース (DevOps)<br/>release_record.md"]
+
+        D1 --> A1["🟨 監査<br/>自動起動"]
+        D2 --> A2["🟨 監査<br/>自動起動"]
+        D3 --> A3["🟨 監査<br/>自動起動"]
+        D4 --> A4["🟨 監査<br/>自動起動"]
+        D5 --> A5["🟨 監査<br/>自動起動"]
+        D6 --> A6["🟨 監査<br/>自動起動"]
+
+        D1 --> D2 --> D3 --> D4 --> D5 --> D6
+    end
+
+    subgraph remand["差し戻し会議"]
+        R["監査FAIL時 自動起動<br/>担当Agent + 監査Agent + 5-Whys<br/>→ 該当工程に戻る"]
+    end
+
+    M3 -->|"ブリッジ出力"| D1
+    A1 & A2 & A3 & A4 & A5 & A6 -->|"FAIL"| remand
+    remand -->|"差し戻し"| dev
