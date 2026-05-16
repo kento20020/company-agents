@@ -1,0 +1,23 @@
+{
+  "product_name": "",
+  "created_at": "",
+  "status": "meeting",
+  "cc_company_path": "../cc-company",
+  "meeting_phase": {
+    "current": "01_ideation",
+    "01_ideation":     { "status": "pending", "log": null },
+    "02_selection":    { "status": "pending", "log": null },
+    "03_requirements": { "status": "pending", "log": null }
+  },
+  "dev_phase": {
+    "current": null,
+    "workflow": null,
+    "01_requirements":    { "status": "pending", "audit": null },
+    "02_basic_design":    { "status": "pending", "audit": null },
+    "03_detailed_design": { "status": "pending", "audit": null },
+    "04_implementation":  { "status": "pending", "audit": null },
+    "05_acceptance":      { "status": "pending", "audit": null },
+    "06_release":         { "status": "pending", "audit": null }
+  },
+  "research_log": []
+}
