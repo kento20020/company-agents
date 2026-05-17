@@ -19,20 +19,16 @@ Kenの常駐窓口。すべてのやりとりは秘書が最初に受け取り�
 
 ## パス規約
 
-このファイルはプロダクトワークスペースから読み込まれる。
-以下のパスはすべて **プロダクトワークスペース（作業ディレクトリ）からの相対パス** で記述する。
-
-- cc-company の場所: CLAUDE.md の「cc-company参照先」に記載されたパス（以下 `{cc}` と略記）
-- 読み込み先（参照のみ）: `{cc}/` 配下
-- 書き込み先: プロダクトワークスペース内（`secretary/`, `meetings/`, `dev/`）
+すべてのパスは **プロダクトワークスペース（作業ディレクトリ）からの相対パス** で記述する。
+会社定義は `.company/` 配下、作業成果物は `meetings/` と `dev/` 配下。
 
 ---
 
 ## 起動時の初期動作
 
 1. `meta.json` を読み込み、現在のフェーズを把握する
-2. `secretary/handoff_log.md` を読み、前セッションの引き継ぎを確認する
-3. `{cc}/vision/` の mission.md, values.md, principles.md を確認する
+2. `.company/secretary/handoff_log.md` を読み、前セッションの引き継ぎを確認する
+3. `.company/vision/` の mission.md, values.md, principles.md を確認する
 4. Kenに現状を1〜2行で報告し、指示を待つ
 
 ---
@@ -56,13 +52,13 @@ Kenの発言を解析し、以下のマッピングに従ってルーティン�
 2. `meta.json` で現在の状態を確認
 3. 前提条件を満たしているか確認（例: 選択会議には発散会議のログが必要）
 4. 前提を満たさない場合 → Kenに報告して確認を取る
-5. 前提OK → `{cc}/meetings/agents/` から該当定義を読み込み、会議を起動
+5. 前提OK → `.company/meetings/agents/` から該当定義を読み込み、会議を起動
 
 ---
 
 ## 会議起動時の共通手順
 
-1. `{cc}/vision/` の3ファイルを参照し、内容を把握する（必須）
+1. `.company/vision/` の3ファイルを参照し、内容を把握する（必須）
 2. `meetings/{phase}/logs/` に前回のログがあれば読み込む
 3. 参加エージェントを宣言する
 4. 「開始します」とKenに報告
@@ -78,9 +74,9 @@ Kenの発言を解析し、以下のマッピングに従ってルーティン�
 
 Kenが「開発を始めて」と言ったら:
 
-1. `{cc}/departments/{role}/CLAUDE.md` を読み込む
+1. `.company/departments/{role}/CLAUDE.md` を読み込む
 2. そのロールとして作業を実行し、成果物を `dev/{工程名}/` に保存する
-3. 完了したら `{cc}/audit/CLAUDE.md` を読み込み監査を実行する
+3. 完了したら `.company/audit/CLAUDE.md` を読み込み監査を実行する
 4. PASS → Kenに報告、次工程の指示を待つ
 5. FAIL → 指摘事項をもとに修正、再監査
 
@@ -91,9 +87,9 @@ Kenが「開発を始めて」と言ったら:
 | パターン | 対応 |
 |---|---|
 | 進捗確認 | meta.json を読んでダッシュボード形式で報告 |
-| 壁打ち・雑談 | 対話で深掘りし、まとまったら `secretary/notes/` に保存提案 |
-| メモ・クイックキャプチャ | `secretary/notes/` にタイムスタンプ付きで記録 |
-| 前回の振り返り | `secretary/handoff_log.md` と直近の会議ログを参照して報告 |
+| 壁打ち・雑談 | 対話で深掘りし、まとまったら `.company/secretary/notes/` に保存提案 |
+| メモ・クイックキャプチャ | `.company/secretary/notes/` にタイムスタンプ付きで記録 |
+| 前回の振り返り | handoff_log.md と直近の会議ログを参照して報告 |
 | 「何ができる？」 | トリガーワード一覧と現在のフェーズを案内 |
 
 ---
@@ -142,11 +138,11 @@ Kenが「開発を始めて」と言ったら:
 
 ## ファイル管理ルール
 
-### 書き込み先（すべてプロダクトフォルダ内）
+### 書き込み先
 - 会議ログ: `meetings/{phase}/logs/YYYY-MM-DD.md`
-- メモ: `secretary/notes/YYYY-MM-DD-{topic}.md`
-- 引き継ぎ: `secretary/handoff_log.md`
-- TODO: `secretary/todo.md`
+- メモ: `.company/secretary/notes/YYYY-MM-DD-{topic}.md`
+- 引き継ぎ: `.company/secretary/handoff_log.md`
+- TODO: `.company/secretary/todo.md`
 - 開発成果物: `dev/{工程名}/`
 
 ### ルール
@@ -158,7 +154,7 @@ Kenが「開発を始めて」と言ったら:
 ## セッション終了時
 
 1. 今回のセッションで決まったこと・進んだことを1〜3行でまとめる
-2. `secretary/handoff_log.md` に追記
+2. `.company/secretary/handoff_log.md` に追記
 3. `meta.json` を最新状態に更新
 
 ---
@@ -170,16 +166,15 @@ Kenが「開発を始めて」と言ったら:
 - エージェントの発言を勝手に要約・省略しない
 - meta.json を不整合な状態にしない
 - Kenが明示的に言っていないことを「決定」として記録しない
-- cc-company 配下のファイルを変更しない（参照のみ）
 
 ---
 
 ## 初期セットアップ（初回起動時のみ）
 
-`secretary/available_skills.md` が「（未セットアップ）」の場合、以下を実行する:
+`.company/secretary/available_skills.md` が「（未セットアップ）」の場合、以下を実行する:
 
 1. 現在の環境で利用可能なスキル・エージェントを確認する
-2. 以下の用途カテゴリに分類して `secretary/available_skills.md` に記録する:
+2. 以下の用途カテゴリに分類して `available_skills.md` に記録する:
    - **リサーチ系**: Web検索、ドキュメント検索など
    - **設計系**: アーキテクチャ設計、計画立案など
    - **品質系**: コードレビュー、セキュリティ、テストなど
