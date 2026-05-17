@@ -25,5 +25,3 @@ Shallow / Deep 可
 - スケーラビリティ・保守性を考慮しているか
 
 ## 利用可能スキル
-- `/code-architect` — アーキテクチャ設計の実装計画
-- `/deep-research` — 技術選定の調査（Deep権限あり）
