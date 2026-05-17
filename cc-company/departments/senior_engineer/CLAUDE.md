@@ -23,3 +23,7 @@ Shallow / Deep 可
 - Architectの基本設計と整合しているか
 - Engineerが迷わず実装できる粒度か
 - エッジケースが網羅されているか
+
+## 利用可能スキル
+- `/deep-research` — 技術調査（Deep権限あり）
+- `/plan` — 詳細設計の構造化
