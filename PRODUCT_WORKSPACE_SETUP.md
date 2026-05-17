@@ -9,13 +9,29 @@
 ### Step 1: テンプレートをコピー
 
 ```bash
-cp -r product-template/ product-{プロダクト名}/
+cp -r company-agents/product-template/ product-{プロダクト名}/
 cd product-{プロダクト名}/
 ```
 
-### Step 2: Vision を確認
+### Step 2: CLAUDE.md の参照先を設定
 
-`../cc-company/vision/` の3ファイルを確認する。
+`CLAUDE.md` を開き、「cc-company参照先」を記入する。
+
+```markdown
+- cc-company参照先: ../company-agents/cc-company
+```
+
+※ プロダクトフォルダから cc-company への相対パスを書く。
+フォルダ配置例:
+```
+PGs/
+├── company-agents/cc-company/   ← 会社本体
+└── product-my-app/              ← ここから ../company-agents/cc-company
+```
+
+### Step 3: Vision を確認
+
+`company-agents/cc-company/vision/` の3ファイルを確認する。
 
 | ファイル | 内容 | 例 |
 |---|---|---|
@@ -26,19 +42,20 @@ cd product-{プロダクト名}/
 - 既に記入済み → そのまま使う
 - 空の場合 → 秘書と対話しながら一緒に作るか、自分で直接書く
 
-### Step 3: Claude Code を開く
+### Step 4: Claude Code を開く
 
 ```bash
+cd product-{プロダクト名}/
 claude
 ```
 
 秘書が自動で起動し、以下を実行する:
 1. `CLAUDE.md` を読み込み
-2. `secretary/CLAUDE.md` を読み込み
+2. cc-company の `secretary/CLAUDE.md` を読み込み
 3. `meta.json` で状態確認
 4. 「準備できました。何をしましょうか？」と報告
 
-### Step 4: 始める
+### Step 5: 始める
 
 ```
 Ken: 「発散会議を開いて」
@@ -46,18 +63,22 @@ Ken: 「発散会議を開いて」
 
 ---
 
-## フォルダ構成（自動生成済み）
+## プロダクトフォルダの構成
 
 ```
 product-{名前}/
-├── CLAUDE.md              ← ブートローダー（秘書を呼ぶだけ）
-├── meta.json              ← 状態管理（現在のフェーズ等）
-├── meetings/              ← 会議ログの保存先
+├── CLAUDE.md              ← ブートローダー（cc-company参照先を設定）
+├── meta.json              ← 状態管理
+├── secretary/             ← 秘書の書き込み先
+│   ├── handoff_log.md     　 セッション引き継ぎ
+│   ├── todo.md            　 TODO
+│   └── notes/             　 メモ・壁打ち記録
+├── meetings/              ← 会議ログ保存先
 │   ├── 01_ideation/logs/
 │   ├── 02_selection/logs/
 │   ├── 03_requirements/logs/
-│   └── research/          ← Deepリサーチの成果物
-└── dev/                   ← 開発成果物の保存先
+│   └── research/          　 Deepリサーチ成果物
+└── dev/                   ← 開発成果物保存先
     ├── 01_requirements/
     ├── 02_basic_design/
     ├── 03_detailed_design/
@@ -85,5 +106,6 @@ product-{名前}/
 ## 注意事項
 
 - 会議は自動で次に進まない。Kenが「次を開いて」と言うまで待つ
-- `cc-company/` フォルダは読み取り専用。プロダクトフォルダから変更しない
+- cc-company フォルダは読み取り専用。変更しない
 - 同じ日の会議ログは追記される（新規ファイル作成しない）
+- 書き込みはすべてプロダクトフォルダ内で完結する
