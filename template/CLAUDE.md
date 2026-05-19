@@ -37,3 +37,4 @@
 - 引き継ぎ: `.company/secretary/handoff_log.md`
 - TODO: `.company/secretary/todo.md`
 - 開発成果物: `dev/{工程名}/`
+- 実装ノート: `dev/04_implementation/implementation_notes.md`（仕様書外の判断を残す）
